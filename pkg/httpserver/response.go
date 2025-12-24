@@ -2,7 +2,7 @@ package httpserver
 
 import (
 	"go-http-server-sdk/internal/core/router"
-	"go-http-server-sdk/pkg/httpserver/httpservercontract"
+	httpservercontract "go-http-server-sdk/pkg/httpserver/contract"
 )
 
 func NewResponse(status int, data any) httpservercontract.Response {

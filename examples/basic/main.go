@@ -10,7 +10,7 @@ import (
 	"time"
 
 	"go-http-server-sdk/pkg/httpserver"
-	"go-http-server-sdk/pkg/httpserver/httpservercontract"
+	httpservercontract "go-http-server-sdk/pkg/httpserver/contract"
 )
 
 func main() {
@@ -82,27 +82,27 @@ func main() {
 
 // Handlers
 
-func helloHandler(ctx context.Context, req httpservercontract.Request) httpservercontract.Response {
+func helloHandler(ctx context.Context, req httpservercontract.Request) (httpservercontract.Response, error) {
 	return httpserver.NewResponse(200, map[string]string{
 		"message": "Hello, World!",
-	})
+	}), nil
 }
 
-func getUserHandler(ctx context.Context, req httpservercontract.Request) httpservercontract.Response {
+func getUserHandler(ctx context.Context, req httpservercontract.Request) (httpservercontract.Response, error) {
 	userID := req.Param("id")
 	return httpserver.NewResponse(200, map[string]interface{}{
 		"user_id": userID,
 		"name":    fmt.Sprintf("User %s", userID),
 		"email":   fmt.Sprintf("user%s@example.com", userID),
-	})
+	}), nil
 }
 
-func createUserHandler(ctx context.Context, req httpservercontract.Request) httpservercontract.Response {
+func createUserHandler(ctx context.Context, req httpservercontract.Request) (httpservercontract.Response, error) {
 	var body map[string]string
 	if err := req.Bind(&body); err != nil {
 		return httpserver.NewResponse(400, map[string]string{
 			"error": "Invalid request body",
-		})
+		}), err
 	}
 
 	return httpserver.NewResponse(201, map[string]interface{}{
@@ -110,46 +110,46 @@ func createUserHandler(ctx context.Context, req httpservercontract.Request) http
 		"name":    body["name"],
 		"email":   body["email"],
 		"created": true,
-	})
+	}), nil
 }
 
-func statusHandler(ctx context.Context, req httpservercontract.Request) httpservercontract.Response {
+func statusHandler(ctx context.Context, req httpservercontract.Request) (httpservercontract.Response, error) {
 	return httpserver.NewResponse(200, map[string]string{
 		"status": "ok",
-	})
+	}), nil
 }
 
-func productsHandler(ctx context.Context, req httpservercontract.Request) httpservercontract.Response {
+func productsHandler(ctx context.Context, req httpservercontract.Request) (httpservercontract.Response, error) {
 	products := []map[string]interface{}{
 		{"id": "1", "name": "Product 1", "price": 100},
 		{"id": "2", "name": "Product 2", "price": 200},
 	}
-	return httpserver.NewResponse(200, products)
+	return httpserver.NewResponse(200, products), nil
 }
 
-func productDetailHandler(ctx context.Context, req httpservercontract.Request) httpservercontract.Response {
+func productDetailHandler(ctx context.Context, req httpservercontract.Request) (httpservercontract.Response, error) {
 	productID := req.Param("id")
 	return httpserver.NewResponse(200, map[string]interface{}{
 		"id":    productID,
 		"name":  fmt.Sprintf("Product %s", productID),
 		"price": 150,
-	})
+	}), nil
 }
 
 // Middleware
 
 type LoggingMiddleware struct{}
 
-func (m *LoggingMiddleware) Handle(ctx context.Context, req httpservercontract.Request, next httpservercontract.Handler) httpservercontract.Response {
+func (m *LoggingMiddleware) Handle(ctx context.Context, req httpservercontract.Request, next httpservercontract.Handler) (httpservercontract.Response, error) {
 	start := time.Now()
 
 	log.Printf("[%s] %s - Started", req.Method(), req.Path())
 
-	resp := next(ctx, req)
+	resp, err := next(ctx, req)
 
 	duration := time.Since(start)
 	log.Printf("[%s] %s - Completed in %v with status %d",
 		req.Method(), req.Path(), duration, resp.Status())
 
-	return resp
+	return resp, err
 }

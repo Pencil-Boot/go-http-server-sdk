@@ -2,14 +2,15 @@ package httpserver
 
 import (
 	"go-http-server-sdk/internal/bootstrap"
-	"go-http-server-sdk/pkg/httpserver/httpservercontract"
+	httpservercontract "go-http-server-sdk/pkg/httpserver/contract"
 )
 
 func NewServer(
 	port int,
-	opts ...httpservercontract.Option,
+	opts ...httpservercontract.ServerOption,
 ) httpservercontract.Server {
-	cfg := httpservercontract.NewConfig(opts...)
+	opts = append(opts, httpservercontract.NewPortOption(port))
+	cfg := httpservercontract.NewServerConfig(opts...)
 
-	return bootstrap.CreateServer(port, cfg)
+	return bootstrap.CreateServer(cfg)
 }

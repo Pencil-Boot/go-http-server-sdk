@@ -3,7 +3,8 @@ package echo
 import (
 	"context"
 	"fmt"
-	"go-http-server-sdk/pkg/httpserver/httpservercontract"
+	"go-http-server-sdk/internal/core/server"
+	httpservercontract "go-http-server-sdk/pkg/httpserver/contract"
 	"net/http"
 
 	echoLib "github.com/labstack/echo/v4"
@@ -11,42 +12,21 @@ import (
 
 // Server represents the public HTTP server
 type echoServer struct {
-	port   int
-	router httpservercontract.Router
-	echo   *echoLib.Echo
-	config httpservercontract.Config
+	echo *echoLib.Echo
 }
 
 // NewServer creates a new server
-func NewServer(port int, cfg httpservercontract.Config) httpservercontract.Server {
-	router := NewEchoRouter()
-	// Get the Echo instance from the router
-	echoRouter, ok := router.(*echoRouter)
-	if !ok {
-		panic("router is not an echoRouter")
-	}
+func NewServer(echo *echoLib.Echo) server.ServerExecutor {
 
 	return &echoServer{
-		port:   port,
-		router: router,
-		echo:   echoRouter.GetEcho(),
-		config: cfg,
+		echo: echo,
 	}
-}
-
-// Router returns the router for route registration
-func (s *echoServer) Router() httpservercontract.Router {
-	return s.router
 }
 
 // Start starts the HTTP server
-func (s *echoServer) Start() error {
-	addr := fmt.Sprintf(":%d", s.port)
-	s.echo.Server.Addr = addr
-	s.echo.Server.ReadTimeout = s.config.ReadTimeout()
-	s.echo.Server.WriteTimeout = s.config.WriteTimeout()
-	s.echo.Server.IdleTimeout = s.config.IdleTimeout()
-	s.echo.Server.MaxHeaderBytes = s.config.MaxHeaderBytes()
+func (s *echoServer) Start(cfg *httpservercontract.ServerConfig) error {
+	addr := getAddress(cfg)
+	fillServerConfig(cfg, s.echo)
 
 	if err := s.echo.Start(addr); err != nil && err != http.ErrServerClosed {
 		return fmt.Errorf("failed to start server: %w", err)
@@ -55,13 +35,9 @@ func (s *echoServer) Start() error {
 }
 
 // StartTLS starts the HTTPS server
-func (s *echoServer) StartTLS(certFile, keyFile string) error {
-	addr := fmt.Sprintf(":%d", s.port)
-	s.echo.Server.Addr = addr
-	s.echo.Server.ReadTimeout = s.config.ReadTimeout()
-	s.echo.Server.WriteTimeout = s.config.WriteTimeout()
-	s.echo.Server.IdleTimeout = s.config.IdleTimeout()
-	s.echo.Server.MaxHeaderBytes = s.config.MaxHeaderBytes()
+func (s *echoServer) StartTLS(certFile, keyFile string, cfg *httpservercontract.ServerConfig) error {
+	addr := getAddress(cfg)
+	fillServerConfig(cfg, s.echo)
 
 	if err := s.echo.StartTLS(addr, certFile, keyFile); err != nil && err != http.ErrServerClosed {
 		return fmt.Errorf("failed to start TLS server: %w", err)
@@ -75,4 +51,15 @@ func (s *echoServer) Shutdown(ctx context.Context) error {
 		return fmt.Errorf("failed to shutdown server: %w", err)
 	}
 	return nil
+}
+
+func getAddress(cfg *httpservercontract.ServerConfig) string {
+	return fmt.Sprintf(":%d", cfg.Port())
+}
+
+func fillServerConfig(cfg *httpservercontract.ServerConfig, s *echoLib.Echo) {
+	s.Server.ReadTimeout = cfg.ReadTimeout()
+	s.Server.WriteTimeout = cfg.WriteTimeout()
+	s.Server.IdleTimeout = cfg.IdleTimeout()
+	s.Server.MaxHeaderBytes = cfg.MaxHeaderBytes()
 }
