@@ -19,10 +19,7 @@ type echoRequest struct {
 // newEchoRequest creates a new request from Echo context
 func newEchoRequest(c echo.Context) httpservercontract.Request {
 	return &echoRequest{
-		ctx:         c,
-		headers:     &echoRequestHeaders{ctx: c},
-		params:      &echoParams{ctx: c},
-		queryParams: &echoQueryParams{ctx: c},
+		ctx: c,
 	}
 }
 
