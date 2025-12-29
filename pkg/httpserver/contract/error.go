@@ -10,7 +10,13 @@ package httpservercontract
 //	  "message": "Error message",
 //	  "cause": ["id invalid", "name is required"]
 //	}
+
+// TODO: maybe change this interface to be a struct
 type HTTPError interface {
+	error
+	// Status returns the HTTP status code associated with the error
+	Status() int
+
 	// Code returns the error code (e.g., "ANY0001")
 	Code() string
 
@@ -20,7 +26,8 @@ type HTTPError interface {
 	// Causes returns the list of specific error causes/messages
 	// Can be empty if there are no detailed causes
 	Causes() []string
-
-	// Status returns the HTTP status code associated with the error
-	Status() int
 }
+
+const (
+	HttpServerUnexpectedError = "HTTPSERVER0001"
+)

@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"log"
 	"os"
@@ -40,6 +41,8 @@ func main() {
 	v1 := api.Group("/v1")
 	v1.GET("/products", productsHandler)
 	v1.GET("/products/:id", productDetailHandler)
+	v1.POST("/error", createErrorHandler)
+	v1.POST("/panic", createPanicHandler)
 
 	// Setup graceful shutdown
 	ctx, cancel := context.WithCancel(context.Background())
@@ -58,6 +61,8 @@ func main() {
 		log.Println("  curl -X POST http://localhost:8080/users -d '{\"name\":\"João\",\"email\":\"joao@example.com\"}'")
 		log.Println("  curl http://localhost:8080/api/status")
 		log.Println("  curl http://localhost:8080/api/v1/products")
+		log.Println("  curl -X POST http://localhost:8080/api/v1/error -d '{\"name\":\"João\"}'")
+		log.Println("  curl -X POST http://localhost:8080/api/v1/panic -d '{\"name\":\"João\"}'")
 		log.Println("")
 
 		if err := srv.Start(); err != nil {
@@ -136,6 +141,14 @@ func productDetailHandler(ctx context.Context, req httpservercontract.Request) (
 	}), nil
 }
 
+func createErrorHandler(ctx context.Context, req httpservercontract.Request) (httpservercontract.Response, error) {
+	return nil, errors.New("Any error")
+}
+
+func createPanicHandler(ctx context.Context, req httpservercontract.Request) (httpservercontract.Response, error) {
+	panic("Any panic")
+}
+
 // Middleware
 
 type LoggingMiddleware struct{}
@@ -148,8 +161,13 @@ func (m *LoggingMiddleware) Handle(ctx context.Context, req httpservercontract.R
 	resp, err := next(ctx, req)
 
 	duration := time.Since(start)
+	status := 0
+	if resp != nil {
+		status = resp.Status()
+	}
+
 	log.Printf("[%s] %s - Completed in %v with status %d",
-		req.Method(), req.Path(), duration, resp.Status())
+		req.Method(), req.Path(), duration, status)
 
 	return resp, err
 }
