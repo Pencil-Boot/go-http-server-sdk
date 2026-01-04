@@ -2,8 +2,9 @@ package echo
 
 import (
 	"encoding/json"
-	httpservercontract "go-http-server-sdk/pkg/httpserver/contract"
 	"io"
+
+	httpservercontract "github.com/Pencil-Boot/go-http-server-sdk/pkg/httpserver/contract"
 
 	"github.com/labstack/echo/v4"
 )

@@ -1,6 +1,6 @@
 package router
 
-import httpservercontract "go-http-server-sdk/pkg/httpserver/contract"
+import httpservercontract "github.com/Pencil-Boot/go-http-server-sdk/pkg/httpserver/contract"
 
 type RouterRegister interface {
 	Register(

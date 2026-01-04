@@ -1,8 +1,8 @@
 package httpserver
 
 import (
-	"go-http-server-sdk/internal/bootstrap"
-	httpservercontract "go-http-server-sdk/pkg/httpserver/contract"
+	"github.com/Pencil-Boot/go-http-server-sdk/internal/bootstrap"
+	httpservercontract "github.com/Pencil-Boot/go-http-server-sdk/pkg/httpserver/contract"
 )
 
 func NewServer(

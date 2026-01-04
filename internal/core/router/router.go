@@ -2,7 +2,8 @@ package router
 
 import (
 	"context"
-	httpservercontract "go-http-server-sdk/pkg/httpserver/contract"
+
+	httpservercontract "github.com/Pencil-Boot/go-http-server-sdk/pkg/httpserver/contract"
 )
 
 type router struct {

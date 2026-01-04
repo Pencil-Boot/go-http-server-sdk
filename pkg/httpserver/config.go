@@ -1,8 +1,9 @@
 package httpserver
 
 import (
-	httpservercontract "go-http-server-sdk/pkg/httpserver/contract"
 	"time"
+
+	httpservercontract "github.com/Pencil-Boot/go-http-server-sdk/pkg/httpserver/contract"
 )
 
 func WithReadTimeout(timeout time.Duration) httpservercontract.ServerOption {

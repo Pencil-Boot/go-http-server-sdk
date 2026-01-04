@@ -1,11 +1,11 @@
 package bootstrap
 
 import (
-	"go-http-server-sdk/internal/adapter/echo"
-	"go-http-server-sdk/internal/core/middleware"
-	"go-http-server-sdk/internal/core/router"
-	"go-http-server-sdk/internal/core/server"
-	httpservercontract "go-http-server-sdk/pkg/httpserver/contract"
+	"github.com/Pencil-Boot/go-http-server-sdk/internal/adapter/echo"
+	"github.com/Pencil-Boot/go-http-server-sdk/internal/core/middleware"
+	"github.com/Pencil-Boot/go-http-server-sdk/internal/core/router"
+	"github.com/Pencil-Boot/go-http-server-sdk/internal/core/server"
+	httpservercontract "github.com/Pencil-Boot/go-http-server-sdk/pkg/httpserver/contract"
 )
 
 func CreateServer(cfg *httpservercontract.ServerConfig) httpservercontract.Server {

@@ -1,4 +1,4 @@
-module go-http-server-sdk
+module github.com/Pencil-Boot/go-http-server-sdk
 
 go 1.25.5
 

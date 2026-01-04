@@ -2,8 +2,9 @@ package router
 
 import (
 	"context"
-	httpservercontract "go-http-server-sdk/pkg/httpserver/contract"
 	"testing"
+
+	httpservercontract "github.com/Pencil-Boot/go-http-server-sdk/pkg/httpserver/contract"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"

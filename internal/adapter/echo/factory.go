@@ -1,8 +1,8 @@
 package echo
 
 import (
-	"go-http-server-sdk/internal/core/router"
-	"go-http-server-sdk/internal/core/server"
+	"github.com/Pencil-Boot/go-http-server-sdk/internal/core/router"
+	"github.com/Pencil-Boot/go-http-server-sdk/internal/core/server"
 
 	"github.com/labstack/echo/v4"
 )

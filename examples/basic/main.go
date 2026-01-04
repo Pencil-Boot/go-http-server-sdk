@@ -10,8 +10,8 @@ import (
 	"syscall"
 	"time"
 
-	"go-http-server-sdk/pkg/httpserver"
-	httpservercontract "go-http-server-sdk/pkg/httpserver/contract"
+	"github.com/Pencil-Boot/go-http-server-sdk/pkg/httpserver"
+	httpservercontract "github.com/Pencil-Boot/go-http-server-sdk/pkg/httpserver/contract"
 )
 
 func main() {
@@ -30,7 +30,7 @@ func main() {
 
 	// Register routes
 	router.GET("/hello", helloHandler)
-	router.GET("/users/:id", getUserHandler)
+	router.GET("/users/{id}", getUserHandler)
 	router.POST("/users", createUserHandler)
 
 	// Create API group

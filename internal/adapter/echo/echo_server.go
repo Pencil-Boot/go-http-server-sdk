@@ -3,9 +3,10 @@ package echo
 import (
 	"context"
 	"fmt"
-	"go-http-server-sdk/internal/core/server"
-	httpservercontract "go-http-server-sdk/pkg/httpserver/contract"
 	"net/http"
+
+	"github.com/Pencil-Boot/go-http-server-sdk/internal/core/server"
+	httpservercontract "github.com/Pencil-Boot/go-http-server-sdk/pkg/httpserver/contract"
 
 	echoLib "github.com/labstack/echo/v4"
 )

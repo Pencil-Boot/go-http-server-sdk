@@ -1,6 +1,6 @@
 package router
 
-import httpservercontract "go-http-server-sdk/pkg/httpserver/contract"
+import httpservercontract "github.com/Pencil-Boot/go-http-server-sdk/pkg/httpserver/contract"
 
 // HTTPResponse is a concrete implementation of the Response interface.
 // It represents an HTTP response with status code, headers, and body.

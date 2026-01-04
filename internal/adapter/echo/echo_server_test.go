@@ -3,11 +3,12 @@ package echo
 import (
 	"context"
 	"fmt"
-	httpservercontract "go-http-server-sdk/pkg/httpserver/contract"
 	"net"
 	"net/http"
 	"testing"
 	"time"
+
+	httpservercontract "github.com/Pencil-Boot/go-http-server-sdk/pkg/httpserver/contract"
 
 	"os"
 	"os/exec"

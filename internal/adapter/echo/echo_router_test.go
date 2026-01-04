@@ -2,10 +2,11 @@ package echo
 
 import (
 	"context"
-	httpservercontract "go-http-server-sdk/pkg/httpserver/contract"
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
+	httpservercontract "github.com/Pencil-Boot/go-http-server-sdk/pkg/httpserver/contract"
 
 	echoLib "github.com/labstack/echo/v4"
 	"github.com/stretchr/testify/assert"
